@@ -71,6 +71,8 @@ For most floating point types (other than `BigFloat`, see below) this should gen
 For example, the `addhalf` function defined above is able to convert this to a single `Float32` multiply:
 ```julia
 julia> @code_llvm addhalf(1f0)
+```
+```llvm
 ;  @ REPL[2]:1 within `addhalf`
 define float @julia_addhalf_115(float %0) #0 {
 top:
