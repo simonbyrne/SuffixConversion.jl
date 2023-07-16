@@ -64,6 +64,31 @@ function mulhalf(x::FT) where {FT}
 end
 ```
 
+# How does it work?
+
+The macro
+```julia
+@suffix FT
+```
+expands to
+```julia
+_FT = SuffixConversion.SuffixConverter{FT}()
+```
+and the `SuffixConverter` type defines methods for pre-multiplication by a `Number`
+```julia
+Base.:*(x::Number, ::SuffixConverter{FT}) where {FT} = convert(FT, x)
+```
+which performs the actual conversion.
+
+It also relies on the fact that implicit multiplication has higher precedence than regular multiplication, so
+```julia
+x * 0.2_FT
+```
+will parse as
+```julia
+x * (0.2 * _FT)
+```
+
 # What are the performance impacts?
 
 For most floating point types (other than `BigFloat`, see below) this should generally work with no runtime overhead, as the Julia compiler is able to determine that the conversion is pure (i.e. has no side effects), and so [constant fold](https://en.wikipedia.org/wiki/Constant_folding) the conversion at compile time. 
@@ -95,7 +120,7 @@ julia> 0.2_BigFloat
 0.2000000000000000000000000000000000000000000000000000000000000000000000000000004
 ```
 whereas regular conversion will give the `Float64` value in `BigFloat` precision
-```
+```julia
 julia> BigFloat(0.2)
 0.200000000000000011102230246251565404236316680908203125
 ```
