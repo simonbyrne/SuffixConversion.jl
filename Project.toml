@@ -1,7 +1,7 @@
 name = "SuffixConversion"
 uuid = "a5344401-2eb1-4dab-b845-3affa8d070e0"
-authors = ["Simon Byrne <simonbyrne@gmail.com> and contributors"]
-version = "1.0.0-DEV"
+authors = ["Simon Byrne <simonbyrne@gmail.com>"]
+version = "0.1"
 
 [compat]
 julia = "1.6"

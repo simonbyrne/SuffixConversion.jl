@@ -21,7 +21,16 @@ end
     @test addhalf2(1.0) === 1.5
     @test addhalf2(1f0) === 1.5f0
     @test addhalf2(Float16(1)) === Float16(1.5)
+end
 
+@testset "BigFloat" begin
+    function addpointtwo(x::FT) where {FT}
+        @suffix FT
+        return x + 0.2_FT
+    end
+
+    @test addpointtwo(1.0) === 1.2
+    @test addpointtwo(big"1.0") == big"1.2"
 end
 
 @testset "broadcasting" begin
